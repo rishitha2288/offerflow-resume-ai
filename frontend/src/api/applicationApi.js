@@ -1,130 +1,83 @@
-import axios from "axios"
+import axios from "axios";
 
-const API =
-`${import.meta.env.VITE_API_URL}/api/applications`
+const API = `${import.meta.env.VITE_API_URL}/api/applications`;
 
 const getToken = () => {
+  return localStorage.getItem("token");
+};
 
-  return localStorage.getItem("token")
-}
+export const getApplications = async () => {
+  const response = await axios.get(API, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-export const getApplications =
-  async () => {
+  return response.data;
+};
 
-    const response =
-      await axios.get(
-        API,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${getToken()}`,
-          },
-        }
-      )
+export const createApplication = async (applicationData) => {
+  const response = await axios.post(API, applicationData, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    return response.data
-  }
+  return response.data;
+};
 
-export const createApplication =
-  async (applicationData) => {
+export const updateApplication = async (id, updatedData) => {
+  const response = await axios.put(`${API}/${id}`, updatedData, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const response =
-      await axios.post(
-        API,
-        applicationData,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${getToken()}`,
-          },
-        }
-      )
+  return response.data;
+};
 
-    return response.data
-  }
+export const deleteApplication = async (id) => {
+  const response = await axios.delete(`${API}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-export const updateApplication =
-  async (id, updatedData) => {
+  return response.data;
+};
 
-    const response =
-      await axios.put(
-        `${API}/${id}`,
-        updatedData,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${getToken()}`,
-          },
-        }
-      )
+export const uploadResume = async (formData) => {
+  const response = await axios.post(
+    `${API}/upload-resume`,
 
-    return response.data
-  }
+    formData,
 
-export const deleteApplication =
-  async (id) => {
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
 
-    const response =
-      await axios.delete(
-        `${API}/${id}`,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${getToken()}`,
-          },
-        }
-      )
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
 
-    return response.data
-  }
+  return response.data;
+};
 
-export const uploadResume =
-  async (formData) => {
+export const analyzeResume = async (formData) => {
+  const response = await axios.post(
+    `${API}/analyze-resume`,
 
-    const response =
-      await axios.post(
+    formData,
 
-        `${API}/upload-resume`,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
 
-        formData,
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
 
-        {
-          headers: {
-
-            Authorization:
-              `Bearer ${getToken()}`,
-
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      )
-
-    return response.data
-  }
-
-
-export const analyzeResume =
-  async (formData) => {
-
-    const response =
-      await axios.post(
-
-        `${API}/analyze-resume`,
-
-        formData,
-
-        {
-          headers: {
-
-            Authorization:
-              `Bearer ${getToken()}`,
-
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      )
-
-    return response.data
-  }
+  return response.data;
+};
