@@ -45,7 +45,7 @@ function Login() {
           border
           rounded-2xl
           p-8
-          space-y-6
+          space-y-6 pb-10
         "
       >
         <h1
